@@ -9,8 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        //step 3 now working with the homeview
+        NavigationView {
+            Home()
+                .navigationBarHidden(true)
+        }
     }
 }
 
