@@ -6,32 +6,26 @@
 //
 
 import SwiftUI
-//step 2 create a Home view to with and pass this into content view
+
 struct Home: View {
-    
-    //step 4 create an instance of the view model
     @StateObject private var expenseViewModel: ExpenseViewModel = .init()
     var body: some View {
-        //step 5 create a scrollview then wrap inside welcome
         ScrollView(.vertical, showsIndicators: false) {
             VStack(spacing: 12) {
                 // MARK: Top Hstack
                 HStack(spacing: 15) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Welcome")
+                        Text("Welcome To")
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundColor(.gray)
-                        //step 7 sub heading
+                      
                         Text("iRichy")
                             .font(.title2.bold())
-                        
-                        
-                        
                     }
-                    //step 6 add a frame with padding
+
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    //step 8 - button to right
+               
                     Button {
                         
                     } label: {
@@ -47,7 +41,6 @@ struct Home: View {
                             .shadow(color: .black.opacity(0.1), radius: 5, x: 5, y: 5)
                     }
                 }
-                //step 9 ExpenseCardView()
                 ExpenseCardView()
             }.padding()
             // MARK: background color of scroll view
@@ -55,9 +48,7 @@ struct Home: View {
             Color("BG").ignoresSafeArea()
         }
     }
-    
-    
-    //step 10 - create card view with a viewBuilder
+
     @ViewBuilder
     func ExpenseCardView()->some View {
         GeometryReader {proxy in
@@ -71,9 +62,70 @@ struct Home: View {
                 )
             
             // MARK: Next create dates and expense totals
+            //step 4 implement the date string method via the view model
             
-        }.frame(height: 220)
-            .padding(.top)
+            VStack(spacing: 15) {
+                VStack(spacing: 15) {
+                    Text(expenseViewModel.currentMonthStartDateString())
+                        .font(.callout)
+                        .fontWeight(.semibold)
+                    
+                    //Step 6 implement expenses using the dummy data we have and using the viewmodels expensetocurrency function
+                    Text(expenseViewModel.convertExpensesToCurrency(expenses: expenseViewModel.expenses))
+                        .font(.system(size: 35, weight: .bold))
+                        .lineLimit(1)
+                        .padding(.bottom)
+                }
+                .offset(y: -10)
+                HStack {
+                    Image(systemName: "arrow.down")
+                        .font(.caption.bold())
+                        .foregroundColor(Color("Green"))
+                        .frame(width: 30, height: 30)
+                        .background(.white.opacity(0.7), in: Circle()).padding()
+                    
+                    //step 8 add income and expenses logic using the viewmodels convert to currency function
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Income")
+                            .font(.caption)
+                            .opacity(0.7)
+                        Text(expenseViewModel.convertExpensesToCurrency(expenses: expenseViewModel.expenses, type: .income))
+                            .font(.callout)
+                            .fontWeight(.semibold)
+                            .lineLimit(1)
+                            .fixedSize()}
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                    //step 9 simliar for outgoings update type and Text
+                    Image(systemName: "arrow.up")
+                        .font(.caption.bold())
+                        .foregroundColor(Color("Red"))
+                        .frame(width: 30, height: 30)
+                        .background(.white.opacity(0.7), in: Circle()).padding()
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Expense")
+                            .font(.caption)
+                            .opacity(0.7)
+                        Text(expenseViewModel.convertExpensesToCurrency(expenses: expenseViewModel.expenses, type: .expense))
+                            .font(.callout)
+                            .fontWeight(.semibold)
+                            .lineLimit(1)
+                            .fixedSize()
+                        
+                    }
+  
+                }
+                .padding(.horizontal)
+                .padding(.trailing)
+                .offset(y: 15)
+            }
+            .foregroundColor(.white)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
+
+        }
+        .frame(height: 220)
+        .padding(.top)
     }
 }
 
