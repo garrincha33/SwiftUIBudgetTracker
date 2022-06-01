@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// MARK: Expense Model And Sample Data  //step 1 create a dummy model after importing gradients and color assets
+// MARK: Expense Model And Sample Data  //create a dummy model after importing gradients and color assets
 struct Expense: Identifiable,Hashable{
     var id = UUID().uuidString
     var remark: String
