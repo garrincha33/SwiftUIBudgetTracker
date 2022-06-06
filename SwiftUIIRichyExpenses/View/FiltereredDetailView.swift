@@ -6,19 +6,15 @@
 //
 
 import SwiftUI
-//step 1 create a detail view for filtered results
 
 struct FiltereredDetailView: View {
     @EnvironmentObject var expenseViewModel: ExpenseViewModel
     @Environment(\.self) var env
     
     var body: some View {
-        //step 2 create a scrollview
         ScrollView(.vertical, showsIndicators: false) {
-            //step 3 copy top hstack from homeview and adjust as needed for the appearance of this view
             VStack(spacing: 15) {
                 HStack(spacing: 15) {
-                    //step 4 create a back button (copy image from below and adjust) remove overlay
                     Button {
                         env.dismiss()
                     } label: {
@@ -34,7 +30,6 @@ struct FiltereredDetailView: View {
                             .opacity(0.7)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    //step 1 remove button and cut the image and create a navigationlink, put image inside lable
                     Button {
                         
                     } label: {
@@ -45,6 +40,7 @@ struct FiltereredDetailView: View {
                             .shadow(color: .black.opacity(0.1), radius: 5, x: 5, y: 5)
                     }
                 }
+                //MARK: Expsense Card
             }
             .padding()
         }
