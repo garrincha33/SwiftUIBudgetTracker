@@ -6,12 +6,11 @@
 //
 
 import SwiftUI
-//step 3 create a card view for all the transactions
+
 struct TransactionCardView: View {
     var expense: Expense
     @EnvironmentObject var expenseViewModel: ExpenseViewModel
     var body: some View {
-        //step 5 create first letter avatar
         HStack {
             if let first = expense.remark.first {
                 Text(String(first))
@@ -22,14 +21,11 @@ struct TransactionCardView: View {
                         Circle().fill(Color(expense.color))
                     }.shadow(color: .black.opacity(0.08), radius: 5, x: 5, y: 5)
             }
-            //step 6 add text for avatar
             Text(expense.remark)
                 .fontWeight(.semibold)
                 .lineLimit(1)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            //step 8 display the price and date of purchase
             VStack(alignment: .trailing, spacing: 7) {
-                // TEST FIRST  let price = expenseViewModel.convertNumberToPrice(value: expense.amount)
                 let price = expenseViewModel.convertNumberToPrice(value: expense.type == .expense ? -expense.amount : expense.amount)
                 Text(price)
                     .font(.callout)
@@ -40,7 +36,6 @@ struct TransactionCardView: View {
                     .opacity(0.5)
             }
         }
-        //step 9 add a rounded rect background
         .padding()
         .background {
             RoundedRectangle(cornerRadius: 15, style: .continuous).fill(.white)
