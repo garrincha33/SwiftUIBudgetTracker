@@ -13,6 +13,8 @@ class ExpenseViewModel: ObservableObject {
     @Published var startDate: Date = Date()
     @Published var endDate: Date = Date()
     @Published var currentMonthStartDate: Date = Date()
+    //step 2 create a var to hold tabname
+    @Published var tabName: ExpenseType = .expense
 
     init() {
         let calendar = Calendar.current
@@ -35,6 +37,11 @@ class ExpenseViewModel: ObservableObject {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         return formatter.string(from: .init(value: value)) ?? "£0.00"
+    }
+    
+    //step 7 convert currently selected date to string
+    func convertDateToString() -> String {
+        return startDate.formatted(date: .abbreviated, time: .omitted) + " - " + endDate.formatted(date: .abbreviated, time: .omitted)
     }
 
 }

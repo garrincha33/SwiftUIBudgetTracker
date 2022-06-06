@@ -6,8 +6,7 @@
 //
 
 import SwiftUI
-//step 1 from home view take the expense card view data and plug
-//into this view, we can then re use this card view throughout the app
+
 struct ExpenseCard: View {
     @EnvironmentObject var expenseViewModel: ExpenseViewModel
     var body: some View {
