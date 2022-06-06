@@ -41,7 +41,6 @@ struct Home: View {
                             .shadow(color: .black.opacity(0.1), radius: 5, x: 5, y: 5)
                     }
                 }
-                //step 2 add expense card here instead of the view builder which can now be removed
                 ExpenseCard().environmentObject(expenseViewModel)
                 TransactionView()
             }.padding()
