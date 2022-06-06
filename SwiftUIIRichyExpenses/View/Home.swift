@@ -42,13 +42,15 @@ struct Home: View {
                     }
                 }
                 ExpenseCardView()
+                TransactionView()
             }.padding()
             // MARK: background color of scroll view
         }.background {
             Color("BG").ignoresSafeArea()
         }
+        
+        
     }
-
     @ViewBuilder
     func ExpenseCardView()->some View {
         GeometryReader {proxy in
@@ -62,15 +64,12 @@ struct Home: View {
                 )
             
             // MARK: Next create dates and expense totals
-            //step 4 implement the date string method via the view model
-            
+
             VStack(spacing: 15) {
                 VStack(spacing: 15) {
                     Text(expenseViewModel.currentMonthStartDateString())
                         .font(.callout)
                         .fontWeight(.semibold)
-                    
-                    //Step 6 implement expenses using the dummy data we have and using the viewmodels expensetocurrency function
                     Text(expenseViewModel.convertExpensesToCurrency(expenses: expenseViewModel.expenses))
                         .font(.system(size: 35, weight: .bold))
                         .lineLimit(1)
@@ -83,8 +82,6 @@ struct Home: View {
                         .foregroundColor(Color("Green"))
                         .frame(width: 30, height: 30)
                         .background(.white.opacity(0.7), in: Circle()).padding()
-                    
-                    //step 8 add income and expenses logic using the viewmodels convert to currency function
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Income")
                             .font(.caption)
@@ -95,14 +92,12 @@ struct Home: View {
                             .lineLimit(1)
                             .fixedSize()}
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                    //step 9 simliar for outgoings update type and Text
                     Image(systemName: "arrow.up")
                         .font(.caption.bold())
                         .foregroundColor(Color("Red"))
                         .frame(width: 30, height: 30)
                         .background(.white.opacity(0.7), in: Circle()).padding()
-                    
+        
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Expense")
                             .font(.caption)
@@ -127,6 +122,28 @@ struct Home: View {
         .frame(height: 220)
         .padding(.top)
     }
+    
+    //MARK: Transactions View 9:59
+    //step 2 create the transactions view, add this function BELOW ExpenseCardView()
+    @ViewBuilder
+    func TransactionView()-> some View {
+        //step 10 add some spacing
+        VStack(spacing: 15) {
+            Text("Transactions")
+                .font(.title2.bold())
+                .opacity(0.7)
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
+                .padding(.bottom)
+            
+            ForEach(expenseViewModel.expenses) { expense in
+                //step 4 implenment transaction card view
+                TransactionCardView(expense: expense)
+                    .environmentObject(expenseViewModel)
+            }
+        }
+        .padding(.top)
+    }
+    
 }
 
 struct Home_Previews: PreviewProvider {
