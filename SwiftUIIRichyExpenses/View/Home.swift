@@ -19,15 +19,18 @@ struct Home: View {
                             .font(.caption)
                             .fontWeight(.semibold)
                             .foregroundColor(.gray)
-                      
+                        
                         Text("iRichy")
                             .font(.title2.bold())
                     }
-
+                    
                     .frame(maxWidth: .infinity, alignment: .leading)
-               
-                    Button {
-                        
+                    
+                    //step 1 remove button and cut the image and create a navigationlink, put image inside lable
+                    NavigationLink {
+                        //step 2 call filtered view to navigate to
+                        FiltereredDetailView()
+                            .environmentObject(expenseViewModel)
                     } label: {
                         Image(systemName: "hexagon.fill")
                             .foregroundColor(.gray)
@@ -48,8 +51,6 @@ struct Home: View {
         }.background {
             Color("BG").ignoresSafeArea()
         }
-        
-        
     }
     @ViewBuilder
     func ExpenseCardView()->some View {
@@ -64,7 +65,7 @@ struct Home: View {
                 )
             
             // MARK: Next create dates and expense totals
-
+            
             VStack(spacing: 15) {
                 VStack(spacing: 15) {
                     Text(expenseViewModel.currentMonthStartDateString())
@@ -90,14 +91,14 @@ struct Home: View {
                             .font(.callout)
                             .fontWeight(.semibold)
                             .lineLimit(1)
-                            .fixedSize()}
+                        .fixedSize()}
                     .frame(maxWidth: .infinity, alignment: .leading)
                     Image(systemName: "arrow.up")
                         .font(.caption.bold())
                         .foregroundColor(Color("Red"))
                         .frame(width: 30, height: 30)
                         .background(.white.opacity(0.7), in: Circle()).padding()
-        
+                    
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Expense")
                             .font(.caption)
@@ -109,7 +110,7 @@ struct Home: View {
                             .fixedSize()
                         
                     }
-  
+                    
                 }
                 .padding(.horizontal)
                 .padding(.trailing)
@@ -117,17 +118,14 @@ struct Home: View {
             }
             .foregroundColor(.white)
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-
+            
         }
         .frame(height: 220)
         .padding(.top)
     }
     
-    //MARK: Transactions View 9:59
-    //step 2 create the transactions view, add this function BELOW ExpenseCardView()
     @ViewBuilder
     func TransactionView()-> some View {
-        //step 10 add some spacing
         VStack(spacing: 15) {
             Text("Transactions")
                 .font(.title2.bold())
@@ -136,7 +134,6 @@ struct Home: View {
                 .padding(.bottom)
             
             ForEach(expenseViewModel.expenses) { expense in
-                //step 4 implenment transaction card view
                 TransactionCardView(expense: expense)
                     .environmentObject(expenseViewModel)
             }
