@@ -10,7 +10,6 @@ import SwiftUI
 struct FiltereredDetailView: View {
     @EnvironmentObject var expenseViewModel: ExpenseViewModel
     @Environment(\.self) var env
-    //step 4
     @Namespace var animation
     
     var body: some View {
@@ -33,7 +32,8 @@ struct FiltereredDetailView: View {
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     Button {
-                        
+                        //step 2 apply filter to view via viewmodel
+                        expenseViewModel.showFilterView = true
                     } label: {
                         Image(systemName: "slider.horizontal.3")
                             .foregroundColor(.gray)
@@ -43,20 +43,16 @@ struct FiltereredDetailView: View {
                     }
                 }
                 //MARK: Expsense Card
-                //step 1 re use the expense card
                 ExpenseCard()
                     .environmentObject(expenseViewModel)
-                //step 6 add CustomControl
                 CustomSegmentedControl()
                     .padding(.top)
-                //step 8 currently filtered date with amount
                 VStack(spacing: 15) {
                     Text(expenseViewModel.convertDateToString())
                         .opacity(0.6)
                     Text(expenseViewModel.convertExpensesToCurrency(expenses: expenseViewModel.expenses, type: expenseViewModel.tabName))
                         .font(.title.bold())
                         .opacity(0.9)
-                    //step 9
                         .animation(.none, value: expenseViewModel.tabName)
                 }
                 .padding()
@@ -66,8 +62,6 @@ struct FiltereredDetailView: View {
                         .fill(.white)
                 }
                 .padding(.vertical, 20)
-                
-                //step 10 add the filtered transactions
                 ForEach(expenseViewModel.expenses.filter {
                     return $0.type == expenseViewModel.tabName
                 }) { expense in
@@ -82,8 +76,11 @@ struct FiltereredDetailView: View {
         .background {
             Color("BG").ignoresSafeArea()
         }
+        //step 3 add the view
+        .overlay {
+            FilterView()
+        }
     }
-    //step 3 create custom segmented control
     @ViewBuilder
     func CustomSegmentedControl()-> some View {
         HStack(spacing: 0) {
@@ -95,7 +92,6 @@ struct FiltereredDetailView: View {
                     .padding(.vertical, 12)
                     .frame(maxWidth: .infinity)
                     .background {
-                        //step 4 matched grometry affect
                         if expenseViewModel.tabName == tab {
                             RoundedRectangle(cornerRadius: 10, style: .continuous)
                                 .fill(
@@ -107,7 +103,6 @@ struct FiltereredDetailView: View {
                                 .matchedGeometryEffect(id: "TAB", in: animation)
                         }
                     }
-                //step 5 add tap gesture and content shape
                     .contentShape(Rectangle())
                     .onTapGesture {
                         withAnimation{expenseViewModel.tabName = tab}
@@ -119,6 +114,53 @@ struct FiltereredDetailView: View {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(.white)
         }
+    }
+    //step 2 create a filtered view for when tapping the button this will overlay a calendar view
+    @ViewBuilder
+    func FilterView() -> some View {
+        ZStack {
+            Color.black
+                .opacity(expenseViewModel.showFilterView ? 0.25 : 0)
+                .ignoresSafeArea()
+            if expenseViewModel.showFilterView {
+                VStack(alignment: .leading, spacing: 10) {
+                    Text("Start Date")
+                        .font(.caption.bold())
+                        .opacity(0.7)
+                    
+                    DatePicker("", selection: $expenseViewModel.startDate, in: Date.distantPast...Date(), displayedComponents: [.date])
+                        .labelsHidden()
+                        .datePickerStyle(.compact)
+                    
+                    Text("End Date")
+                        .font(.caption.bold())
+                        .opacity(0.7)
+                        .padding(.top, 10)
+                    
+                    DatePicker("", selection: $expenseViewModel.endDate, in: Date.distantPast...Date(), displayedComponents: [.date])
+                        .labelsHidden()
+                        .datePickerStyle(.compact)
+                }
+                //step 3 add rounded rect to display in
+                .padding(60)
+                .background {
+                    RoundedRectangle(cornerRadius: 10, style: .continuous)
+                        .fill(.white)
+                    //step 4 add a close button
+                    .overlay(alignment: .topTrailing, content: {
+                        Button {
+                            expenseViewModel.showFilterView = false
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.title3)
+                                .foregroundColor(.black)
+                                .padding(5)
+                        }
+                    }).padding()
+                }
+            }
+        }
+        .animation(.easeIn, value: expenseViewModel.showFilterView)
     }
 }
 
