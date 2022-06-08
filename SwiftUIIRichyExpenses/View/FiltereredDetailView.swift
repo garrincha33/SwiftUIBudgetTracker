@@ -28,11 +28,11 @@ struct FiltereredDetailView: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text("Transactions")
                             .font(.title.bold())
+                            .foregroundColor(Color("Gray2"))
                             .opacity(0.7)
                             .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     Button {
-                        //step 2 apply filter to view via viewmodel
                         expenseViewModel.showFilterView = true
                     } label: {
                         Image(systemName: "slider.horizontal.3")
@@ -43,7 +43,6 @@ struct FiltereredDetailView: View {
                     }
                 }
                 //MARK: Expsense Card
-                //step 3 update to use filter
                 ExpenseCard(isFilter: true)
                     .environmentObject(expenseViewModel)
                 CustomSegmentedControl()
@@ -51,8 +50,10 @@ struct FiltereredDetailView: View {
                 VStack(spacing: 15) {
                     Text(expenseViewModel.convertDateToString())
                         .opacity(0.6)
+                        .foregroundColor(Color("Gray2"))
                     Text(expenseViewModel.convertExpensesToCurrency(expenses: expenseViewModel.expenses, type: expenseViewModel.tabName))
                         .font(.title.bold())
+                        .foregroundColor(Color("Gray2"))
                         .opacity(0.9)
                         .animation(.none, value: expenseViewModel.tabName)
                 }
@@ -67,7 +68,7 @@ struct FiltereredDetailView: View {
                     return $0.type == expenseViewModel.tabName
                 }) { expense in
                     TransactionCardView(expense: expense)
-                        .environmentObject(expenseViewModel)
+                        .environmentObject(expenseViewModel).foregroundColor(Color("Gray2"))
 
                 }
             }

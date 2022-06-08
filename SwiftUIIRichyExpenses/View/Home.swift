@@ -18,10 +18,11 @@ struct Home: View {
                         Text("Welcome To")
                             .font(.caption)
                             .fontWeight(.semibold)
-                            .foregroundColor(.gray)
+                            .foregroundColor(Color("Gray"))
                         
                         Text("iRichy")
                             .font(.title2.bold())
+                            .foregroundColor(Color("Gray2"))
                     }
                     
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -48,30 +49,58 @@ struct Home: View {
         }.background {
             Color("BG").ignoresSafeArea()
         }
-        //step 6 add a fullscreen cover where the expense will show
         .fullScreenCover(isPresented: $expenseViewModel.addNewExpense) {
-            
+            //step 2 add in clear data function
+            expenseViewModel.clearData()
         } content: {
             NewExpense().environmentObject(expenseViewModel)
         }
+        //step 6 add the button as an overlay after the new expense content
+        .overlay(alignment: .bottomTrailing) {
+            AddButton()
+        }
     }
+    //step 5 add new expense button
+    @ViewBuilder
+    func AddButton() -> some View {
+        Button {
+            expenseViewModel.addNewExpense.toggle()
+        } label: {
+            Image(systemName: "plus")
+                .font(.system(size: 26, weight: .medium))
+                .foregroundColor(.white)
+                .frame(width: 55, height: 55)
+                .background {
+                    Circle().fill(
+                        .linearGradient(colors: [
+                        Color("Gradient1"),
+                        Color("Gradient2"),
+                        Color("Gradient3"),
+                        ], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    )
+                }
+                .shadow(color: .black.opacity(0.1), radius: 5, x: 5, y: 5)
+        }
+        .padding()
+    }
+    
     @ViewBuilder
     func TransactionView()-> some View {
         VStack(spacing: 15) {
             Text("Transactions")
                 .font(.title2.bold())
+                .foregroundColor(Color("Gray2"))
                 .opacity(0.7)
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                 .padding(.bottom)
             
             ForEach(expenseViewModel.expenses) { expense in
-                TransactionCardView(expense: expense)
+                TransactionCardView(expense: expense).foregroundColor(Color("Gray2"))
                     .environmentObject(expenseViewModel)
             }
         }
         .padding(.top)
     }
-    
 }
 
 struct Home_Previews: PreviewProvider {

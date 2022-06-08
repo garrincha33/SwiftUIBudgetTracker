@@ -48,5 +48,26 @@ class ExpenseViewModel: ObservableObject {
     func convertDateToString() -> String {
         return startDate.formatted(date: .abbreviated, time: .omitted) + " - " + endDate.formatted(date: .abbreviated, time: .omitted)
     }
+    //step 1 create a way to clear all data
+    func clearData() {
+        date = Date()
+        type = .all
+        remark = ""
+        amount = ""
+    }
+    
+    //step 3 save data
+    func saveData(env: EnvironmentValues) {
+        //MARK: - this is where core data saving context will go
+        print("save")
+        let amountInDouble = (amount as NSString).doubleValue
+        let colors = ["Yellow", "Red", "Purple", "Green"]
+        let expense = Expense(id: "Expense.ID", remark: remark, amount: amountInDouble, date: date, type: type, color: colors.randomElement() ?? "Red")
+        withAnimation{expenses.append(expense)}
+        expenses = expenses.sorted(by: { first, second in
+            return second.date > first.date
+        })
+        env.dismiss()
+    }
 
 }
