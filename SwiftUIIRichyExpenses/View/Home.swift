@@ -48,6 +48,12 @@ struct Home: View {
         }.background {
             Color("BG").ignoresSafeArea()
         }
+        //step 6 add a fullscreen cover where the expense will show
+        .fullScreenCover(isPresented: $expenseViewModel.addNewExpense) {
+            
+        } content: {
+            NewExpense().environmentObject(expenseViewModel)
+        }
     }
     @ViewBuilder
     func TransactionView()-> some View {
