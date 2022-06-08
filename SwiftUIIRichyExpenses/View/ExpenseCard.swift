@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ExpenseCard: View {
     @EnvironmentObject var expenseViewModel: ExpenseViewModel
+    //step 1 add a filter bool
+    var isFilter: Bool = false
     var body: some View {
         GeometryReader {proxy in
             RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -22,7 +24,8 @@ struct ExpenseCard: View {
             // MARK: Next create dates and expense totals
             VStack(spacing: 15) {
                 VStack(spacing: 15) {
-                    Text(expenseViewModel.currentMonthStartDateString())
+                    //step 1 apply filter
+                    Text(isFilter ? expenseViewModel.convertDateToString() : expenseViewModel.currentMonthStartDateString())
                         .font(.callout)
                         .fontWeight(.semibold)
                     Text(expenseViewModel.convertExpensesToCurrency(expenses: expenseViewModel.expenses))

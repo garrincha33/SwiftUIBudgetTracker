@@ -14,8 +14,15 @@ class ExpenseViewModel: ObservableObject {
     @Published var endDate: Date = Date()
     @Published var currentMonthStartDate: Date = Date()
     @Published var tabName: ExpenseType = .expense
-    //step 1 create a publised var bool so we can use it to filter the results
     @Published var showFilterView: Bool = false
+    //MARK: - add new expense properties
+    //step 4 create properties for adding a new expense
+    @Published var addNewExpense: Bool = false
+    @Published var amount: String = ""
+    @Published var type: ExpenseType = .all
+    @Published var date: Date = Date()
+    @Published var remark: String = ""
+    
     init() {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.year, .month], from: Date())

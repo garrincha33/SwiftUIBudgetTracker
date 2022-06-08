@@ -43,7 +43,8 @@ struct FiltereredDetailView: View {
                     }
                 }
                 //MARK: Expsense Card
-                ExpenseCard()
+                //step 3 update to use filter
+                ExpenseCard(isFilter: true)
                     .environmentObject(expenseViewModel)
                 CustomSegmentedControl()
                     .padding(.top)
@@ -76,7 +77,6 @@ struct FiltereredDetailView: View {
         .background {
             Color("BG").ignoresSafeArea()
         }
-        //step 3 add the view
         .overlay {
             FilterView()
         }
@@ -115,7 +115,7 @@ struct FiltereredDetailView: View {
                 .fill(.white)
         }
     }
-    //step 2 create a filtered view for when tapping the button this will overlay a calendar view
+
     @ViewBuilder
     func FilterView() -> some View {
         ZStack {
@@ -141,12 +141,10 @@ struct FiltereredDetailView: View {
                         .labelsHidden()
                         .datePickerStyle(.compact)
                 }
-                //step 3 add rounded rect to display in
                 .padding(60)
                 .background {
                     RoundedRectangle(cornerRadius: 10, style: .continuous)
                         .fill(.white)
-                    //step 4 add a close button
                     .overlay(alignment: .topTrailing, content: {
                         Button {
                             expenseViewModel.showFilterView = false
